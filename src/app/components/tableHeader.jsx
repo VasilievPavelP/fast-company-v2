@@ -30,18 +30,12 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
         {Object.keys(columns).map((column) => (
           <th
             key={column}
-            onClick={
-              columns[column].path
-                ? () => handleSort(columns[column].path)
-                : undefined
-            }
+            onClick={columns[column].path ? () => handleSort(columns[column].path) : undefined}
             {...{ role: columns[column].path && 'button' }}
             scope='col'
           >
-            {columns[column].name}
-            {columns[column].path
-              ? renderSortArrow(selectedSort, columns[column].path)
-              : ''}
+            {columns[column].name}{' '}
+            {columns[column].path ? renderSortArrow(selectedSort, columns[column].path) : null}
           </th>
         ))}
       </tr>
