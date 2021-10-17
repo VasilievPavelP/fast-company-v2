@@ -9,6 +9,7 @@ import SearchStatus from '../components/searchStatus'
 import _ from 'lodash'
 import { useParams } from 'react-router-dom'
 import UserPage from '../components/userPage'
+import TableSearch from '../components/tableSearch'
 
 const Users = () => {
   const [users, setUsers] = useState()
@@ -17,6 +18,7 @@ const Users = () => {
   const [selectedProf, setSelectedProf] = useState()
   const [selectedUser, setSelectedUser] = useState()
   const [sortBy, setSortBy] = useState({ iter: 'name', order: 'asc' })
+  const [search, setSearch] = useState('')
   const params = useParams()
   const pageSize = 4
 
@@ -59,21 +61,42 @@ const Users = () => {
     setCurrentPage(pageIndex)
   }
 
+  const handleChange = ({ target }) => {
+    setSearch(target.value)
+  }
+
   const userId = params.userId
 
   useEffect(() => {
     api.users.getById(userId).then((data) => setSelectedUser(data))
   }, [userId])
 
+  const handleSearch = () => {
+    const value = search.toLowerCase()
+
+    const filter = users.filter((user) => {
+      return user.name.toLowerCase().includes(value)
+    })
+
+    return filter
+  }
+
+  const handleSelectedProf = () => {
+    const filter = users.filter((user) => JSON.stringify(user.profession) === JSON.stringify(selectedProf))
+
+    return filter
+  }
+
   if (userId) {
     return <UserPage user={selectedUser} id={userId} />
   } else {
     if (users) {
-      const filteredUsers = selectedProf ? users.filter((user) => JSON.stringify(user.profession) === JSON.stringify(selectedProf)) : users
+      const filteredUsers = search ? handleSearch() : selectedProf ? handleSelectedProf() : users
 
       const count = filteredUsers.length
       const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order])
       const usersCrop = paginate(sortedUsers, currentPage, pageSize)
+
       const clearFilter = () => {
         setSelectedProf()
       }
@@ -84,13 +107,13 @@ const Users = () => {
             <div className='d-flex flex-column flex-shrink-0 p-3'>
               <GroupList selectedItem={selectedProf} items={professions} onItemSelect={handleProfessionSelect} />
               <button className='btn btn-secondary mt-2' onClick={clearFilter}>
-                {' '}
-                Очиститть
+                Очистить
               </button>
             </div>
           )}
           <div className='d-flex flex-column'>
             <SearchStatus length={count} />
+            <TableSearch value={search} onChange={handleChange} />
             {count > 0 && <UserTable onSort={handleSort} users={usersCrop} onDelete={handleDelete} onToggleBookMark={handleToggleBookMark} selectedSort={sortBy} />}
             <div className='d-flex justify-content-center'>
               <Pagination itemsCount={count} pageSize={pageSize} currentPage={currentPage} onPageChange={handlePageChange} />
