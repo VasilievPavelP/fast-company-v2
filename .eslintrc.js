@@ -12,5 +12,7 @@ module.exports = {
     sourceType: 'module'
   },
   plugins: ['react'],
-  rules: {}
+  rules: {
+    indent: [0, 4]
+  }
 }

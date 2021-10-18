@@ -32,7 +32,7 @@ const Users = () => {
 
   useEffect(() => {
     setCurrentPage(1)
-  }, [selectedProf])
+  }, [selectedProf, search])
 
   const handleDelete = (userId) => {
     setUsers(users.filter((user) => user._id !== userId))
@@ -50,6 +50,7 @@ const Users = () => {
   }
 
   const handleProfessionSelect = (item) => {
+    if (search !== '') setSearch('')
     setSelectedProf(item)
   }
 
@@ -61,37 +62,26 @@ const Users = () => {
     setCurrentPage(pageIndex)
   }
 
-  const handleChange = ({ target }) => {
-    setSearch(target.value)
-  }
-
   const userId = params.userId
 
   useEffect(() => {
     api.users.getById(userId).then((data) => setSelectedUser(data))
   }, [userId])
 
-  const handleSearch = () => {
-    const value = search.toLowerCase()
-
-    const filter = users.filter((user) => {
-      return user.name.toLowerCase().includes(value)
-    })
-
-    return filter
-  }
-
-  const handleSelectedProf = () => {
-    const filter = users.filter((user) => JSON.stringify(user.profession) === JSON.stringify(selectedProf))
-
-    return filter
+  const handleSearch = ({ target }) => {
+    setSelectedProf()
+    setSearch(target.value)
   }
 
   if (userId) {
     return <UserPage user={selectedUser} id={userId} />
   } else {
     if (users) {
-      const filteredUsers = search ? handleSearch() : selectedProf ? handleSelectedProf() : users
+      const filteredUsers = search
+        ? users.filter((user) => user.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
+        : selectedProf
+        ? users.filter((user) => JSON.stringify(user.profession) === JSON.stringify(selectedProf))
+        : users
 
       const count = filteredUsers.length
       const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order])
@@ -105,7 +95,11 @@ const Users = () => {
         <div className='d-flex'>
           {professions && (
             <div className='d-flex flex-column flex-shrink-0 p-3'>
-              <GroupList selectedItem={selectedProf} items={professions} onItemSelect={handleProfessionSelect} />
+              <GroupList
+                selectedItem={selectedProf}
+                items={professions}
+                onItemSelect={handleProfessionSelect}
+              />
               <button className='btn btn-secondary mt-2' onClick={clearFilter}>
                 Очистить
               </button>
@@ -113,10 +107,23 @@ const Users = () => {
           )}
           <div className='d-flex flex-column'>
             <SearchStatus length={count} />
-            <TableSearch value={search} onChange={handleChange} />
-            {count > 0 && <UserTable onSort={handleSort} users={usersCrop} onDelete={handleDelete} onToggleBookMark={handleToggleBookMark} selectedSort={sortBy} />}
+            <TableSearch value={search} onChange={handleSearch} />
+            {count > 0 && (
+              <UserTable
+                onSort={handleSort}
+                users={usersCrop}
+                onDelete={handleDelete}
+                onToggleBookMark={handleToggleBookMark}
+                selectedSort={sortBy}
+              />
+            )}
             <div className='d-flex justify-content-center'>
-              <Pagination itemsCount={count} pageSize={pageSize} currentPage={currentPage} onPageChange={handlePageChange} />
+              <Pagination
+                itemsCount={count}
+                pageSize={pageSize}
+                currentPage={currentPage}
+                onPageChange={handlePageChange}
+              />
             </div>
           </div>
         </div>
