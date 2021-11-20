@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { paginate } from '../utils/paginate'
-import Pagination from '../components/pagination'
-import UserTable from '../components/userTable'
+import Pagination from '../components/common/pagination'
+import UserTable from '../components/ui/userTable'
 import api from '../api'
-import GroupList from '../components/groupList'
-import SearchStatus from '../components/searchStatus'
+import GroupList from '../components/common/groupList'
+import SearchStatus from '../components/ui/searchStatus'
 import _ from 'lodash'
 import { useParams } from 'react-router-dom'
-import UserPage from '../components/userPage'
-import TableSearch from '../components/tableSearch'
+import UserPage from '../components/page/userPage'
+import TableSearch from '../components/common/table/tableSearch'
 
 const Users = () => {
   const [users, setUsers] = useState()
@@ -17,6 +17,7 @@ const Users = () => {
   const [professions, setProfession] = useState()
   const [selectedProf, setSelectedProf] = useState()
   const [selectedUser, setSelectedUser] = useState()
+  const [qualities, setQualities] = useState()
   const [sortBy, setSortBy] = useState({ iter: 'name', order: 'asc' })
   const [search, setSearch] = useState('')
   const params = useParams()
@@ -28,6 +29,10 @@ const Users = () => {
 
   useEffect(() => {
     api.professions.fetchAll().then((data) => setProfession(data))
+  }, [])
+
+  useEffect(() => {
+    api.qualities.fetchAll().then((data) => setQualities(data))
   }, [])
 
   useEffect(() => {
@@ -63,6 +68,7 @@ const Users = () => {
   }
 
   const userId = params.userId
+  const updateParams = params.update
 
   useEffect(() => {
     api.users.getById(userId).then((data) => setSelectedUser(data))
@@ -74,7 +80,16 @@ const Users = () => {
   }
 
   if (userId) {
-    return <UserPage user={selectedUser} id={userId} />
+    return (
+      <UserPage
+        user={selectedUser}
+        id={userId}
+        updateParams={updateParams}
+        professions={professions}
+        qualities={qualities}
+        update={api.users.update}
+      />
+    )
   } else {
     if (users) {
       const filteredUsers = search
