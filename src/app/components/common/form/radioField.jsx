@@ -16,15 +16,12 @@ const RadioField = ({ options, name, onChange, value, label }) => {
               className='form-check-input'
               type='radio'
               name={name}
-              checked={option.value === value}
               id={option.name + '_' + option.value}
+              checked={option.value === value}
               value={option.value}
               onChange={handleChange}
             />
-            <label
-              className='form-check-label'
-              htmlFor={option.name + '_' + option.value}
-            >
+            <label className='form-check-label' htmlFor={option.name + '_' + option.value}>
               {option.name}
             </label>
           </div>
@@ -39,7 +36,7 @@ RadioField.propTypes = {
   name: PropTypes.string,
   onChange: PropTypes.func,
   value: PropTypes.string,
-  label: PropTypes.string
+  label: PropTypes.string,
 }
 
 export default RadioField

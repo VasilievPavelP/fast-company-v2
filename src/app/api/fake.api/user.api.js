@@ -1,35 +1,36 @@
 import { professionsObject as professions } from './professions.api'
+
 const qualities = {
   tedious: {
     _id: '67rdca3eeb7f6fgeed471198',
     name: 'Нудила',
-    color: 'primary'
+    color: 'primary',
   },
   strange: {
     _id: '67rdca3eeb7f6fgeed471100',
     name: 'Странный',
-    color: 'secondary'
+    color: 'secondary',
   },
   buller: {
     _id: '67rdca3eeb7f6fgeed4711012',
     name: 'Троль',
-    color: 'success'
+    color: 'success',
   },
   alcoholic: {
     _id: '67rdca3eeb7f6fgeed471101',
     name: 'Алкоголик',
-    color: 'danger'
+    color: 'danger',
   },
   handsome: {
     _id: '67rdca3eeb7f6fgeed471102',
     name: 'Красавчик',
-    color: 'info'
+    color: 'info',
   },
   uncertain: {
     _id: '67rdca3eeb7f6fgeed471103',
     name: 'Неуверенный',
-    color: 'dark'
-  }
+    color: 'dark',
+  },
 }
 
 const users = [
@@ -42,7 +43,7 @@ const users = [
     qualities: [qualities.tedious, qualities.uncertain, qualities.strange],
     completedMeetings: 36,
     rate: 2.5,
-    bookmark: false
+    bookmark: false,
   },
   {
     _id: '67rdca3eeb7f6fgeed471816',
@@ -53,7 +54,7 @@ const users = [
     qualities: [qualities.buller, qualities.handsome, qualities.alcoholic],
     completedMeetings: 15,
     rate: 2.5,
-    bookmark: false
+    bookmark: false,
   },
   {
     _id: '67rdca3eeb7f6fgeed471817',
@@ -64,7 +65,7 @@ const users = [
     qualities: [qualities.buller],
     completedMeetings: 247,
     rate: 3.5,
-    bookmark: false
+    bookmark: false,
   },
   {
     _id: '67rdca3eeb7f6fgeed471818',
@@ -75,7 +76,7 @@ const users = [
     qualities: [qualities.uncertain],
     completedMeetings: 148,
     rate: 3.5,
-    bookmark: false
+    bookmark: false,
   },
   {
     _id: '67rdca3eeb7f6fgeed471819',
@@ -86,7 +87,7 @@ const users = [
     qualities: [qualities.strange, qualities.tedious],
     completedMeetings: 37,
     rate: 4.6,
-    bookmark: false
+    bookmark: false,
   },
   {
     _id: '67rdca3eeb7f6fgeed471820',
@@ -97,7 +98,7 @@ const users = [
     qualities: [qualities.strange, qualities.uncertain],
     completedMeetings: 147,
     rate: 3.5,
-    bookmark: false
+    bookmark: false,
   },
   {
     _id: '67rdca3eeb7f6fgeed471821',
@@ -108,7 +109,7 @@ const users = [
     qualities: [qualities.strange, qualities.tedious],
     completedMeetings: 72,
     rate: 3.5,
-    bookmark: false
+    bookmark: false,
   },
   {
     _id: '67rdca3eeb7f6fgeed471822',
@@ -119,7 +120,7 @@ const users = [
     qualities: [qualities.handsome],
     completedMeetings: 72,
     rate: 5,
-    bookmark: false
+    bookmark: false,
   },
   {
     _id: '67rdca3eeb7f6fgeed471823',
@@ -130,7 +131,7 @@ const users = [
     qualities: [qualities.strange, qualities.uncertain],
     completedMeetings: 17,
     rate: 4.5,
-    bookmark: false
+    bookmark: false,
   },
   {
     _id: '67rdca3eeb7f6fgeed471824',
@@ -141,7 +142,7 @@ const users = [
     qualities: [qualities.handsome, qualities.buller],
     completedMeetings: 17,
     rate: 4.5,
-    bookmark: false
+    bookmark: false,
   },
   {
     _id: '67rdca3eeb7f6fgeed47181f',
@@ -152,7 +153,7 @@ const users = [
     qualities: [qualities.uncertain, qualities.strange],
     completedMeetings: 434,
     rate: 3.5,
-    bookmark: false
+    bookmark: false,
   },
   {
     _id: '67rdca3eeb7f6fgeed47181r',
@@ -163,8 +164,8 @@ const users = [
     qualities: [qualities.handsome],
     completedMeetings: 434,
     rate: 5,
-    bookmark: false
-  }
+    bookmark: false,
+  },
 ]
 
 if (!localStorage.getItem('users')) {
@@ -177,6 +178,7 @@ const fetchAll = () =>
       resolve(JSON.parse(localStorage.getItem('users')))
     }, 2000)
   })
+
 const update = (id, data) =>
   new Promise((resolve) => {
     const users = JSON.parse(localStorage.getItem('users'))
@@ -192,8 +194,9 @@ const getById = (id) =>
       resolve(JSON.parse(localStorage.getItem('users')).find((user) => user._id === id))
     }, 1000)
   })
+
 export default {
   fetchAll,
   getById,
-  update
+  update,
 }

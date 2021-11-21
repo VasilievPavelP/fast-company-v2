@@ -1,52 +1,54 @@
-import React from 'react'
-import Quality from '../../ui/qualities/quality'
-import UserForm from '../../ui/userForm'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
-const UserPage = ({ user, id, updateParams, professions, qualities, update }) => {
+import api from '../../../api'
+import UserCard from './userInfoCards/userCard'
+import QualitiesCard from './userInfoCards/qualitiesCard'
+import MeetingCard from './userInfoCards/meetingsCard'
+import CreateCommentCard from './userCommponentsCards/createCommentCard'
+import CommentsCard from './userCommponentsCards/commentsCard'
+
+const UserPage = ({ userId }) => {
+  const history = useHistory()
+  const [user, setUser] = useState()
+
+  useEffect(() => {
+    api.users.getById(userId).then((data) => setUser(data))
+  }, [])
+
+  const handleClick = () => {
+    history.push(history.location.pathname + '/edit')
+  }
+
   if (user) {
-    if (updateParams) {
-      return (
-        <UserForm
-          user={user}
-          professions={professions}
-          qualities={qualities}
-          update={update}
-        />
-      )
-    }
     return (
-      <div className='container'>
-        <h1>{user.name}</h1>
-        <h2>Профессия: {user.profession.name}</h2>
-        {user.qualities.map((qualitie) => (
-          <Quality key={qualitie._id} color={qualitie.color} name={qualitie.name} _id={qualitie._id} />
-        ))}
-        <h4>Встретился, раз:{user.completedMeetings}</h4>
-        <h4>Рейтинг: {user.rate}</h4>
-        <div className='w-50'>
-          <Link className='btn btn-secondary d-block w-50 mb-4' to={`/users/${user._id}/update`}>
-            Изменить
-          </Link>
-          <Link className='btn btn-primary d-block w-50' to='/users'>
-            Все пользователи
-          </Link>
+      <div className="container">
+        <div className="row gutters-sm">
+          <div className="col-md-4 mb-3">
+            <UserCard
+              name={user.name}
+              profession={user.profession.name}
+              rate={user.rate}
+              onClick={handleClick}
+            />
+            <QualitiesCard qualities={user.qualities}/>
+            <MeetingCard meetings={user.completedMeetings}/>
+          </div>
+          <div className="col-md-8">
+            <CreateCommentCard />
+            <CommentsCard />
+          </div>
         </div>
       </div>
     )
+  } else {
+    return <h1>Loading</h1>
   }
-
-  return <h1>Loading...</h1>
 }
 
 UserPage.propTypes = {
-  id: PropTypes.string,
-  user: PropTypes.object,
-  updateParams: PropTypes.string,
-  professions: PropTypes.object,
-  qualities: PropTypes.object,
-  update: PropTypes.func
+  userId: PropTypes.string.isRequired,
 }
 
 export default UserPage
