@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const UserCard = ({ name, profession, rate, onClick }) => {
+const UserCard = ({ name, id, profession, rate, onClick }) => {
   return (
     <div className='card mb-3'>
       <div className='card-body'>
@@ -13,11 +13,7 @@ const UserCard = ({ name, profession, rate, onClick }) => {
         </button>
         <div className='d-flex flex-column align-items-center text-center position-relative'>
           <img
-            src={`https://avatars.dicebear.com/api/avataaars/${(
-              Math.random() + 1
-          )
-              .toString(36)
-              .substring(7)}.svg`}
+            src={`https://avatars.dicebear.com/api/avataaars/${id}.svg`}
             className='rounded-circle'
             alt="avatar"
             width='150'
@@ -40,6 +36,7 @@ const UserCard = ({ name, profession, rate, onClick }) => {
 UserCard.propTypes = {
   name: PropTypes.string,
   profession: PropTypes.string,
+  id: PropTypes.string,
   rate: PropTypes.number,
   onClick: PropTypes.func,
 }
