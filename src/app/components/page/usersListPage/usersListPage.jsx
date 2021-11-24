@@ -86,7 +86,6 @@ const UsersListPage = () => {
               onItemSelect={handleProfessionSelect}
             />
             <button className='btn btn-secondary mt-2' onClick={clearFilter}>
-              {' '}
               Очиститть
             </button>
           </div>

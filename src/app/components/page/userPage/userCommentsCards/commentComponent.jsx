@@ -2,13 +2,20 @@ import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 
 import api from '../../../../api'
+import { displayDate } from '../../../../utils/displayDate'
 
 const CommentComponent = ({ userId, content, createdAt, deleteComment, id }) => {
   const [userName, setUserName] = useState()
+  const [createDate, setCreateDate] = useState()
+  const now = Date.now()
 
   useEffect(() => {
     api.users.getById(userId).then((data) => setUserName(data.name))
   }, [])
+
+  useEffect(() => {
+    setCreateDate(displayDate(createdAt))
+  }, [now])
 
   return (
     <div className='bg-light card-body mb-3'>
@@ -29,7 +36,7 @@ const CommentComponent = ({ userId, content, createdAt, deleteComment, id }) => 
                     <div className='d-flex justify-content-between align-items-center'>
                       <p className='mb-1'>
                         {userName}
-                        <span className='small'> {createdAt}</span>
+                        <span className='small'> {createDate && createDate}</span>
                       </p>
                       <button
                         className='btn btn-sm text-primary d-flex align-items-center'
@@ -56,7 +63,7 @@ CommentComponent.propTypes = {
   userId: PropTypes.string,
   content: PropTypes.string,
   id: PropTypes.string,
-  createdAt: PropTypes.string,
+  createdAt: PropTypes.number,
   deleteComment: PropTypes.func,
 }
 

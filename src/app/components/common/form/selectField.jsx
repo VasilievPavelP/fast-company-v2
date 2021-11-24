@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const SelectField = ({ label, value, onChange, defaultOption, options, error }) => {
+const SelectField = ({ label, name, value, onChange, defaultOption, options, error }) => {
   const handleChange = ({ target }) => {
     onChange({ name: target.name, value: target.value })
   }
@@ -14,19 +14,21 @@ const SelectField = ({ label, value, onChange, defaultOption, options, error }) 
     !Array.isArray(options) && typeof options === 'object'
       ? Object.keys(options).map((optionName) => ({
           name: options[optionName].name,
-          value: options[optionName]._id,
+          _id: options[optionName]._id,
         }))
       : options
 
   return (
     <div className='mb-4'>
-      <label htmlFor='validationCustom04' className='form-label'>
-        {label}
-      </label>
+      {label && (
+        <label htmlFor='validationCustom04' className='form-label'>
+          {label}
+        </label>
+      )}
       <select
         className={getInputClasses()}
         id='validationCustom04'
-        name='profession'
+        name={name}
         value={value}
         onChange={handleChange}
       >
@@ -35,7 +37,7 @@ const SelectField = ({ label, value, onChange, defaultOption, options, error }) 
         </option>
         {optionsArray &&
           optionsArray.map((option) => (
-            <option value={option.value} key={option.value}>
+            <option value={option._id} key={option._id}>
               {option.name}
             </option>
           ))}
@@ -49,6 +51,7 @@ SelectField.propTypes = {
   defaultOption: PropTypes.string,
   label: PropTypes.string,
   value: PropTypes.string,
+  name: PropTypes.string,
   onChange: PropTypes.func,
   error: PropTypes.string,
   options: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),

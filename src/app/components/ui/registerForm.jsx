@@ -27,6 +27,7 @@ const RegisterForm = () => {
   }, [])
 
   const handleChange = (target) => {
+    console.log(target)
     setData((prevState) => ({
       ...prevState,
       [target.name]: target.value,

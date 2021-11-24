@@ -2,14 +2,16 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import CommentComponent from './commentComponent'
+import { sortedComments } from '../../../../utils/sortedComments'
 
 const CommentsCard = ({ comments, deleteComment }) => {
+  const sorted = sortedComments(comments)
   return (
     <div className='card mb-3'>
       <div className='card-body'>
         <h2>Comments</h2>
         <hr />
-        {comments.map((item) => (
+        {sorted.map((item) => (
           <CommentComponent
             key={item._id}
             userId={item.userId}

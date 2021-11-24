@@ -46,7 +46,7 @@ const UserPage = ({ userId }) => {
             <MeetingCard meetings={user.completedMeetings} />
           </div>
           <div className='col-md-8'>
-            <CreateCommentCard />
+            <CreateCommentCard userId={userId} />
             {comments.length !== 0 && (
               <CommentsCard comments={comments} deleteComment={deleteComment} />
             )}
