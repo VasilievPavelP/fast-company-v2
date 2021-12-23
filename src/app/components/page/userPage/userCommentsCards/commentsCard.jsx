@@ -7,8 +7,8 @@ import { sortedComments } from '../../../../utils/sortedComments'
 const CommentsCard = ({ comments, deleteComment }) => {
   const sorted = sortedComments(comments)
   return (
-    <div className='card mb-3'>
-      <div className='card-body'>
+    <div className="card mb-3">
+      <div className="card-body">
         <h2>Comments</h2>
         <hr />
         {sorted.map((item) => (

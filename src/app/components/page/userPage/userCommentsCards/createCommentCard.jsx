@@ -66,27 +66,31 @@ const CreateCommentCard = ({ userId }) => {
   }
 
   return (
-    <div className='card mb-2'>
-      <div className='card-body'>
+    <div className="card mb-2">
+      <div className="card-body">
         <form onSubmit={handleSubmit}>
           <h2>New comment</h2>
           <SelectField
-            defaultOption='Ты кто?'
-            name='userId'
+            defaultOption="Ты кто?"
+            name="userId"
             options={users}
             onChange={handleChange}
             value={data.userId}
             error={errors.userId}
           />
           <TextareaField
-            label='Соощение'
-            name='content'
-            rows='3'
+            label="Соощение"
+            name="content"
+            rows="3"
             onChange={handleChange}
             value={data.content}
             error={errors.content}
           />
-          <button type='submit' disabled={!isValid} className='btn btn-primary w-100 mx-auto'>
+          <button
+            type="submit"
+            disabled={!isValid}
+            className="btn btn-primary w-100 mx-auto"
+          >
             Submit
           </button>
         </form>
