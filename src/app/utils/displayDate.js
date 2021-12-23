@@ -1,45 +1,29 @@
-export function displayDate(createAt) {
-  const now = Date.now()
-  const time = now - createAt
-  if (time < 300000) {
-    return '1 минуту назад'
-  }
-  if (time < 600000) {
-    return '5 минут назад'
-  }
-  if (time < 1800000) {
-    return '10 минут назад'
-  }
-  if (time < 3600000) {
-    return '30 минут назад'
-  }
+export function displayDate(data) {
+    const date = new Date(parseInt(data));
+    const dateNow = new Date();
+    const yearDif = dateNow.getFullYear() - date.getFullYear();
+    if (yearDif === 0) {
+        const dayDif = dateNow.getDay() - date.getDay();
+        if (dayDif === 0) {
+            const hourDif = dateNow.getHours() - date.getHours();
+            if (hourDif === 0) {
+                const minutesDif = dateNow.getMinutes() - date.getMinutes();
 
-  const startDate = new Date(createAt)
-  const monthNames = [
-    'января',
-    'февраля',
-    'марта',
-    'апреля',
-    'мая',
-    'июня',
-    'июля',
-    'августа',
-    'сентября',
-    'октября',
-    'ноября',
-    'декабря',
-  ]
-  const day = startDate.getDate()
-  const monthIndex = startDate.getMonth()
-  const year = startDate.getFullYear()
-  const hours = startDate.getHours()
-  const minutes = startDate.getMinutes()
-  if (time < 86400000) {
-    return `${hours}:${minutes}`
-  }
-  if (time < 2629746000) {
-    return `${day} ${monthNames[monthIndex]}`
-  }
+                if (minutesDif >= 0 && minutesDif < 5) return "1 минуту назад";
+                if (minutesDif >= 5 && minutesDif < 10) return "5 минут назад";
+                if (minutesDif >= 10 && minutesDif < 30) {
+                    return "10 минут назад";
+                }
+                return "30 минут назад";
+            }
+            return `${date.getHours()}:${date.getMinutes()}`;
+        }
 
-  return `${day} ${monthNames[monthIndex]} ${year} года`
+        return `${date.getDay()} ${date.toLocaleString("default", {
+            month: "long"
+        })}`;
+    }
+    return (
+        date.getFullYear() + "." + (date.getMonth() + 1) + "_" + date.getDate()
+    );
 }
